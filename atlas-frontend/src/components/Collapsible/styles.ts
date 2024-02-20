@@ -76,7 +76,7 @@ export const CollapsibleContainer = styled.div<ICollapsibleContainer>`
       }
 
       return `
-        background-color: ${isTitle ? backgroundColor : '#f7f7f7'} !important;
+        background-color: ${isTitle ? backgroundColor : '#f2f7f7'} !important;
         color: ${isTitle ? '#ffffff' : color} !important;
         border-radius: 50px;
       `;

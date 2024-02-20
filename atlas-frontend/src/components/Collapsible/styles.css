@@ -2,8 +2,8 @@
   font-weight: 600;
   font-size: 14px;
   margin: 10px 0;
-  display: inline-block;
   border-radius: 5px;
+  color: #000000;
 }
 
 .Collapsible {
@@ -22,6 +22,7 @@
   padding: 0px 15px 10px;
   background: #ffffff;
   align-items: stretch;
+  border-radius: 20px;
 }
 
 .Collapsible__contentInner .metric {
