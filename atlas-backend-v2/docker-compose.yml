@@ -1,0 +1,16 @@
+version: '3'
+services:
+  atlas_backend_v2_app:
+    container_name: atlas_backend_v2_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      DefaultConnection: "Host=localhost;Port=5432;Database=atlasdb;Username=atlas_adm;Password=123456"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      
+volumes:
+  pgdata: {}
