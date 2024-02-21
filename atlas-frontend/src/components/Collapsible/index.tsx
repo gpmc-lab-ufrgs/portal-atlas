@@ -1,9 +1,10 @@
-/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import Component from 'react-collapsible';
 import { CollapsibleType, CollapsibleNames } from './type';
 import './styles.css';
 import * as Styles from './styles';
+
+// Images
 import demograficaImage from './assets/demografico.png';
 import economiaImage from './assets/economia.png';
 import educacaoImage from './assets/educacao.png';
@@ -15,141 +16,119 @@ import segurancaImage from './assets/seguranca.png';
 import urbanismoImage from './assets/urbanismo.png';
 import empreendedorismoImage from './assets/empreendedorismo.png';
 
-
+// Const for the default value of the collapsible
 const CollapsibleDefaultValue: Record<CollapsibleNames, boolean> = {
-    'Locations to Compare': true,
-    'Demographic Summary': true,
-    'Economic Summary': false,
-    'Growth Summary': false,
-    'Residential Housing Summary': false,
-    'Financial Transactions': false,
-    'Business Counts': false,
-    'Turnover vs. Cost of Sales': false,
-    'Business Rental Costs': false,
+  'Locations to Compare': true,
+  'Demographic Summary': true,
+  'Economic Summary': false,
+  'Growth Summary': false,
+  'Residential Housing Summary': false,
+  'Financial Transactions': false,
+  'Business Counts': false,
+  'Turnover vs. Cost of Sales': false,
+  'Business Rental Costs': false,
 };
 
 interface Props {
-    isTitle?: boolean;
-    children: React.ReactNode;
-    title: string;
+  isTitle?: boolean;
+  children: React.ReactNode;
+  title: string;
 }
 
+// Auxiliar functions
+const isOpen = (key: string, openedCollapsibles: string[]) => openedCollapsibles.includes(key);
+
+const updateIsOpen = (
+  key: string,
+  value: boolean,
+  collapsible: CollapsibleType,
+  openedCollapsibles: string[],
+  setOpenedCollapsibles: React.Dispatch<React.SetStateAction<string[]>>,
+) => {
+  const newValue = { ...collapsible, [key]: value };
+  setOpenedCollapsibles((prevOpenedCollapsibles) =>
+    value ? [...prevOpenedCollapsibles, key] : prevOpenedCollapsibles.filter((item) => item !== key),
+  );
+  return newValue;
+};
+
+const onOpen = (
+  key: string,
+  collapsible: CollapsibleType,
+  openedCollapsibles: string[],
+  setOpenedCollapsibles: React.Dispatch<React.SetStateAction<string[]>>,
+) => updateIsOpen(key, true, collapsible, openedCollapsibles, setOpenedCollapsibles);
+
+const onClose = (
+  key: string,
+  collapsible: CollapsibleType,
+  openedCollapsibles: string[],
+  setOpenedCollapsibles: React.Dispatch<React.SetStateAction<string[]>>,
+) => updateIsOpen(key, false, collapsible, openedCollapsibles, setOpenedCollapsibles);
+
+// Collapsible component
 const Collapsible = ({ children, title, isTitle = false }: Props) => {
-    const [collapsible, setCollapsible] = useState<CollapsibleType>(CollapsibleDefaultValue);
+  const [collapsible, setCollapsible] = useState<CollapsibleType>(CollapsibleDefaultValue);
+  const initialOpenedCollapsibles = ['Demográfica', 'Demographic', 'Comparação', 'Comparison'];
+  const [openedCollapsibles, setOpenedCollapsibles] = useState<string[]>(
+    JSON.parse(localStorage.getItem('openedCollapsibles')!) || initialOpenedCollapsibles,
+  );
 
-    // Initialize openedCollapsibles with the desired values
-    const initialOpenedCollapsibles = ['Demográfica', 'Demographic', 'Comparação', 'Comparison'];
+  useEffect(() => {
+    localStorage.setItem('openedCollapsibles', JSON.stringify(openedCollapsibles));
+  }, [openedCollapsibles]);
 
-    // Load opened collapsibles from localStorage when the component mounts
-    const [openedCollapsibles, setOpenedCollapsibles] = useState<string[]>(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        JSON.parse(localStorage.getItem('openedCollapsibles')!) || initialOpenedCollapsibles,
-    );
+  return (
+    <Styles.CollapsibleContainer isTitle={isTitle} title={title}>
+      <Component
+        trigger={renderTrigger(title)}
+        onOpening={() => onOpen(title, collapsible, openedCollapsibles, setOpenedCollapsibles)}
+        onClosing={() => onClose(title, collapsible, openedCollapsibles, setOpenedCollapsibles)}
+        lazyRender={true}
+        className={title}
+      >
+        {children}
+      </Component>
+    </Styles.CollapsibleContainer>
+  );
+};
 
-    useEffect(() => {
-        //console.log('Opened Collapsibles:', openedCollapsibles);
-        // Save openedCollapsibles to localStorage whenever it changes
-        localStorage.setItem('openedCollapsibles', JSON.stringify(openedCollapsibles));
-    }, [openedCollapsibles]);
+// Function to render the trigger based on the title
+const renderTrigger = (title: string) => (
+  <div className="flex flex-row items-center">
+    {renderImage(title)}
+    <span>{title}</span>
+  </div>
+);
 
-    const isOpen = (key: string) => {
-        return openedCollapsibles.includes(key);
-    };
+// Function to render the image based on the title
+const renderImage = (title: string) => {
+  const images: Record<string, any> = {
+    Demográfica: demograficaImage,
+    Demographic: demograficaImage,
+    Economia: economiaImage,
+    Economy: economiaImage,
+    Empreendedorismo: empreendedorismoImage,
+    Entrepreneurship: empreendedorismoImage,
+    Educação: educacaoImage,
+    Education: educacaoImage,
+    'Tecnologia e Inovação': tiImage,
+    'Technology and Inovation': tiImage,
+    Mobilidade: mobilidadeImage,
+    Mobility: mobilidadeImage,
+    'Meio Ambiente': meioambienteImage,
+    Environment: meioambienteImage,
+    Saúde: saudeImage,
+    Health: saudeImage,
+    Segurança: segurancaImage,
+    Safety: segurancaImage,
+    Urbanismo: urbanismoImage,
+    Urbanism: urbanismoImage,
+  };
 
-    const updateIsOpen = (key: any, value: any) => {
-        const newValue = { ...collapsible, [key]: value };
-        setCollapsible(newValue);
+  const image = images[title]; // Get the image based on the title
 
-        if (value && !openedCollapsibles.includes(key)) {
-            // If the collapsible is opened and not already in the list, add it to the list of opened collapsibles
-            setOpenedCollapsibles((prevOpenedCollapsibles) => [...prevOpenedCollapsibles, key]);
-        } else if (!value && openedCollapsibles.includes(key)) {
-            // If the collapsible is closed and is in the list, remove it from the list of opened collapsibles
-            setOpenedCollapsibles((prevOpenedCollapsibles) => prevOpenedCollapsibles.filter((item) => item !== key));
-        }
-    };
-
-    const onOpen = (key: any) => updateIsOpen(key, true);
-    const onClose = (key: any) => updateIsOpen(key, false);
-
-    return (
-        <Styles.CollapsibleContainer isTitle={isTitle} title={title}>
-            <Component
-                trigger={
-                    <div className='flex flex-row items-center'>
-                        {(title === 'Demográfica' || title === 'Demographic') && (
-                            <>
-                                <img src={demograficaImage} alt="Image" style={{ maxWidth: '35%', height: 'auto', marginRight: 5 }} />
-                                <span className='self-center'>{title}</span>
-                            </>
-                        )}
-                        {(title === 'Economia' || title === 'Economy') && (
-                            <>
-                                <img src={economiaImage} alt="Image" style={{ maxWidth: '35%', height: 'auto', marginRight: 5 }} />
-                                <span>{title}</span>
-                            </>
-                        )}
-                        {(title === 'Empreendedorismo' || title === 'Entrepreneurship') && (
-                            <>
-                                <img src={empreendedorismoImage} alt="Image" style={{ maxWidth: '35%', height: 'auto', marginRight: 5 }} />
-                                <span>{title}</span>
-                            </>
-                        )}
-                        {(title === 'Urbanismo' || title === 'Urbanism') && (
-                            <>
-                                <img src={urbanismoImage} alt="Image" style={{ maxWidth: '35%', height: 'auto', marginRight: 5 }} />
-                                <span>{title}</span>
-                            </>
-                        )}
-                        {(title === 'Tecnologia e Inovação' || title === 'Technology and Inovation') && (
-                            <>
-                                <img src={tiImage} alt="Image" style={{ maxWidth: '35%', height: 'auto', marginRight: 5 }} />
-                                <span>{title}</span>
-                            </>
-                        )}
-                        {(title === 'Educação' || title === 'Education') && (
-                            <>
-                                <img src={educacaoImage} alt="Image" style={{ maxWidth: '35%', height: 'auto', marginRight: 5 }} />
-                                <span>{title}</span>
-                            </>
-                        )}
-                        {(title === 'Saúde' || title === 'Health') && (
-                            <>
-                                <img src={saudeImage} alt="Image" style={{ maxWidth: '35%', height: 'auto', marginRight: 5 }} />
-                                <span>{title}</span>
-                            </>
-                        )}
-                        {(title === 'Mobilidade' || title === 'Mobility') && (
-                            <>
-                                <img src={mobilidadeImage} alt="Image" style={{ maxWidth: '35%', height: 'auto', marginRight: 5 }} />
-                                <span>{title}</span>
-                            </>
-                        )}
-                        {(title === 'Segurança' || title === 'Safety') && (
-                            <>
-                                <img src={segurancaImage} alt="Image" style={{ maxWidth: '35%', height: 'auto', marginRight: 5 }} />
-                                <span>{title}</span>
-                            </>
-                        )}
-                        {(title === 'Meio Ambiente' || title === 'Environment') && (
-                            <>
-                                <img src={meioambienteImage} alt="Image" style={{ maxWidth: '35%', height: 'auto', marginRight: 5 }} />
-                                <span>{title}</span>
-                            </>
-                        )}
-                    </div>
-                }
-                // open={isOpen(title)}
-                onOpening={() => onOpen(title)}
-                onClosing={() => onClose(title)}
-                lazyRender={true}
-                className={`${title}`}
-            >
-                {children}
-            </Component>
-        </Styles.CollapsibleContainer>
-
-    );
+  return image && <img src={image} alt={`${title} image`} className="max-w-35 h-auto mr-5" />; // Render the image if it exists
 };
 
 export default Collapsible;
