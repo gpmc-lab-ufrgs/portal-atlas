@@ -26,40 +26,39 @@ const ComparisonSection = () => {
 
   if (isState) {
     comparisonRegionIds = comparison.map((feature: any) => feature.properties.CD_UF);
-  }else{
+  } else {
     comparisonRegionIds = comparison.map((feature: any) => feature.properties.CD_MUN);
   }
-
 
   const location = useLocation();
   const { pathname } = location;
   const isEnglish = pathname.includes('/en');
 
   const ComparisonResult = () => (
-  <div>
-    {isEnglish && isState ? (
-      <Styles.ComparisonButton to={'/comparison_states_en/' + comparisonRegionIds.join('+')}>
-        <p>{isEnglish ? 'Show Comparison' : 'Mostrar comparação'}</p>
-        <Styles.ChevronIcon />
-      </Styles.ComparisonButton>
-    ) : isState ? (
-      <Styles.ComparisonButton to={'/comparison_states/' + comparisonRegionIds.join('+')}>
-        <p>{isEnglish ? 'Show Comparison' : 'Mostrar comparação'}</p>
-        <Styles.ChevronIcon />
-      </Styles.ComparisonButton>
-    ) : isEnglish ? (
-      <Styles.ComparisonButton to={'/comparison_en/' + comparisonRegionIds.join('+')}>
-        <p>{isEnglish ? 'Show Comparison' : 'Mostrar comparação'}</p>
-        <Styles.ChevronIcon />
-      </Styles.ComparisonButton>
-    ) : (
-      <Styles.ComparisonButton to={'/comparison/' + comparisonRegionIds.join('+')}>
-        <p>{isEnglish ? 'Show Comparison' : 'Mostrar comparação'}</p>
-        <Styles.ChevronIcon />
-      </Styles.ComparisonButton>
-    )}
-  </div>
-);
+    <div>
+      {isEnglish && isState ? (
+        <Styles.ComparisonButton to={'/comparison_states_en/' + comparisonRegionIds.join('+')}>
+          <p>{isEnglish ? 'Show Comparison' : 'Mostrar comparação'}</p>
+          <Styles.ChevronIcon />
+        </Styles.ComparisonButton>
+      ) : isState ? (
+        <Styles.ComparisonButton to={'/comparison_states/' + comparisonRegionIds.join('+')}>
+          <p>{isEnglish ? 'Show Comparison' : 'Mostrar comparação'}</p>
+          <Styles.ChevronIcon />
+        </Styles.ComparisonButton>
+      ) : isEnglish ? (
+        <Styles.ComparisonButton to={'/comparison_en/' + comparisonRegionIds.join('+')}>
+          <p>{isEnglish ? 'Show Comparison' : 'Mostrar comparação'}</p>
+          <Styles.ChevronIcon />
+        </Styles.ComparisonButton>
+      ) : (
+        <Styles.ComparisonButton to={'/comparison/' + comparisonRegionIds.join('+')}>
+          <p>{isEnglish ? 'Show Comparison' : 'Mostrar comparação'}</p>
+          <Styles.ChevronIcon />
+        </Styles.ComparisonButton>
+      )}
+    </div>
+  );
 
   return (
     <Collapsible title={isEnglish ? 'Comparison' : 'Comparação'}>
