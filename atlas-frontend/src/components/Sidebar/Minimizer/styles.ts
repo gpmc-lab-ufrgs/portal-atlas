@@ -9,10 +9,9 @@ export const MinimizerWrapper = styled.div<Minimizer>`
   pointer-events: auto;
   cursor: pointer;
 
-
   top: 80px;
   left: ${({ isSidebarOpen }) => (isSidebarOpen ? '345' : '0')}px;
-  padding-left: 18px;
+  padding-left: 0px;
 
   transition: ${({ theme }) =>
     theme.transitions.create(['left'], {
@@ -29,9 +28,9 @@ export const MinimizerWrapper = styled.div<Minimizer>`
   width: 20px;
   height: 40px;
 
-  background: #00406F;
+  background: #00406f;
   color: white;
 
-  border-radius: 0px 5px 5px 0px;
+  border-radius: 0px 10px 10px 0px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 -1px 0 rgba(0, 0, 0, 0.1);
 `;
