@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import viniciusBrei from '@assets/contribuitors/vinicius_brei.jpg';
 import alexSandy from '@assets/contribuitors/alex_sandy.png';
 import mohsenBahrami from '@assets/contribuitors/mohsen_bahrami.png';
@@ -6,7 +7,7 @@ import ricardoLimongi from '@assets/contribuitors/ricardo_limongi.jpg';
 import leonardoGomes from '@assets/contribuitors/leonardo_gomes.jpg';
 import justinAnderson from '@assets/contribuitors/justin_anderson.png';
 import anaBeatriz from '@assets/contribuitors/ana_beatriz.jpeg';
-import julioCesar from '@assets/contribuitors/julio_cesar.jfif';
+import julioCesar from '@assets/contribuitors/julio_cesar.jpeg';
 import enzoGabriel from '@assets/contribuitors/enzo_gabriel.jpeg';
 import valdersonJunior from '@assets/contribuitors/valderson_junior.jpeg';
 import arianoBangemann from '@assets/contribuitors/ariano_bangemann.png';
@@ -19,6 +20,7 @@ import luisMenegetti from '@assets/contribuitors/luis_meneguetti.jpg';
 import pedroDeConto from '@assets/contribuitors/pedro_conto.png';
 import rafaelPereira from '@assets/contribuitors/rafael_pereira.jpg';
 import ruthSelina from '@assets/contribuitors/ruth_selina.jpg';
+import alissonDeivison from '@assets/contribuitors/alisson_deivison.jpeg';
 
 interface Person {
   name: string;
@@ -114,6 +116,13 @@ export const developers: Person[] = [
     hasImage: true,
     socialProfile: 'https://github.com/valdersonjr',
   },
+  {
+    name: 'Alisson Deivison', 
+    image: alissonDeivison,
+    institution: 'Unifacisa',
+    hasImage: true,
+    socialProfile: 'https://github.com/AlissonDeivison'
+  }
 ];
 
 export const researchers: Person[] = [
