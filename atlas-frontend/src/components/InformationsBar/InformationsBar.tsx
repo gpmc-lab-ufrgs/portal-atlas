@@ -5,7 +5,8 @@ import { useTheme } from '@mui/material/styles';
 import { useSidebar } from '@context/sidebarContext';
 
 import { SummaryCard } from './SummaryCard';
-import { RecommendationCard } from './RecommendationCard';
+import RecommendationCard from './RecommendationCard';
+
 import { CloroplethLegend } from './CloroplethLegend';
 import * as Styles from './styles';
 
@@ -15,7 +16,7 @@ export default function InformationBar() {
 
   return (
     <Styles.SideInformationsContainer theme={theme} isSidebarOpen={isSidebarOpen}>
-      {/* <RecommendationCard /> */}
+      <RecommendationCard />
       <CloroplethLegend />
     </Styles.SideInformationsContainer>
   );
