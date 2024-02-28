@@ -87,7 +87,7 @@ const Sidebar: React.FC<Props> = ({ isComparisonMode, title }) => {
           <Styles.Title>
             {hasSelectedDistrict ? title : isEnglish ? 'Atlas of Opportunities' : 'Atlas de Oportunidades'}
           </Styles.Title>
-          {/* <ComparisonButton /> */}
+          <ComparisonButton />
           <RegionDetails />
         </>
       );
