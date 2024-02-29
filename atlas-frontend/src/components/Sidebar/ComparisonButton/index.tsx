@@ -1,7 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { District } from '@customTypes/district';
 import { State } from '@customTypes/state';
+import useStateLayer from '@components/Map/hook/useStateLayer';
+import { estadosSelected } from 'src/features/estadosSlice';
 
 interface Props {
   state: State;
@@ -9,20 +11,19 @@ interface Props {
   onItemClicked: (item: State | District) => void;
 }
 
-function ComparisonButton({ state, district, onItemClicked }: Props) {
+function ComparisonButton({ state }: Props) {
   const pathname = window.location.pathname; // Get the current path
-  
+  const statesList = useSelector(estadosSelected);
+
   // Function to handle the click on the button
-  const handleAddToComparison = (item) => { 
+  const handleAddToComparison = (item: State | District) => () => {
+
     if (pathname.includes('/state')) {
-      if (state && state.properties) {
-        console.log(`Add to comparison state: ${item.state.properties.NM_UF}`);
-      } else {
-        console.log('State object is undefined or does not have properties');
-      }
+        console.log(JSON.stringify(statesList));
+        console.log(JSON.stringify(statesList.map((state) => `${state.nmEstado}`)));
     } else {
-      if (district && district.geometry) {
-        console.log(`Add to comparison district: ${item.district.properties.NM_MUN}`);
+      if (item) {
+        console.log(`Add to comparison district: ${JSON.stringify(item)}`);
       } else {
         console.log('District object is undefined or does not have geometry');
       }
@@ -31,13 +32,12 @@ function ComparisonButton({ state, district, onItemClicked }: Props) {
 
   return (
     <>
-      <button onClick={handleAddToComparison}>Comparar</button>
+      <button onClick={handleAddToComparison(state)}>Comparar</button>
     </>
   );
 }
 
-const mapStateToProps = (state) => {
-  console.log(state.estadosReducer);
+const mapStateToProps = (state: any) => {
   return {
     state: state.estadosReducer,
     district: state.cidadeReducer,
