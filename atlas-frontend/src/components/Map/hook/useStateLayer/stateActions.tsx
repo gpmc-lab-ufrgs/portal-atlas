@@ -10,12 +10,12 @@ import { MapActionType } from '@customTypes/map';
 import { clickedPopup, hoveredPopup } from '../../utils/const';
 import { isDistrictLayerVisible } from '../useDistrictLayer/districtActions';
 
-
 let hoveredId: number | undefined;
 let clickedId: number | undefined;
 
 type Feature = State | null;
 
+// This function adds a popup to the map when the user clicks on a state, the popup will show the name of the state, and the user can click on it to see the details of the state
 export function addPopup(feature: Feature, map: mapboxgl.Map, lngLat: mapboxgl.LngLat, type: MapActionType) {
   const regionName = feature?.properties?.NM_UF;
   const placeholder = document.createElement('div') as Element;
@@ -31,18 +31,20 @@ export function addPopup(feature: Feature, map: mapboxgl.Map, lngLat: mapboxgl.L
   }
 }
 
+// This function sets the hover state of a state, when the user hovers over a state, the state will be highlighted
 function setFeatureHover(featureID: number, map: mapboxgl.Map, state: boolean) {
   map.setFeatureState({ source: 'state', id: featureID }, { hover: state });
 }
 
+// This function sets the click state of a state, when the user clicks on a state, the state will be highlighted
 function setFeatureClick(featureID: number, map: mapboxgl.Map, state: boolean) {
   map.setFeatureState({ source: 'state', id: featureID }, { hover: state });
 }
 
+// This function handles the click event of a state, when the user clicks on a state, the state will be added to the selectedStates array
 export function clickState(feature: Feature, map: mapboxgl.Map) {
   const stateID = feature?.properties?.CD_UF;
   const stateName = feature?.properties?.NM_UF;
-
   if (!stateID) {
     return;
   }
@@ -85,7 +87,6 @@ export function clickState(feature: Feature, map: mapboxgl.Map) {
     clickedId = undefined;
   }
 }
-
 
 export function highlightState(feature: Feature, map: mapboxgl.Map) {
   const stateID = feature?.properties?.CD_UF;
