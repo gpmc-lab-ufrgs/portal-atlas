@@ -6,24 +6,16 @@ import { useComparison as useComparisonState } from '@context/comparisonContextS
 import useMap from '@hook/useMap';
 import * as Styles from './styles';
 import './styles.css';
+import { Dispatch } from 'react';
 
 const ComparisonDetails = () => {
-  const isEnglish = window.location.href.includes('/comparison_en') || window.location.href.includes('/comparison_states_en');
+  const isEnglish =
+    window.location.href.includes('/comparison_en') || window.location.href.includes('/comparison_states_en');
   const isState = window.location.href.includes('/comparison_states');
 
-  let comparison, removeComparisonDistrict, removeComparisonState, removeAllComparisons;
-
-  if (isState) {
-    const { comparison: mainComparison, removeComparisonState: mainComparison3, removeAllComparisons: mainComparison4 } = useComparisonState();
-    comparison = mainComparison;
-    removeComparisonState = mainComparison3;
-    removeAllComparisons = mainComparison4;
-  } else {
-    const { comparison: mainComparison, removeComparisonDistrict: mainComparison3, removeAllComparisons: mainComparison4 } = useComparison();
-    comparison = mainComparison;
-    removeComparisonDistrict = mainComparison3;
-    removeAllComparisons = mainComparison4;
-  }
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const comparisonContext = isState ? useComparisonState() : useComparison();
+  const { comparison, removeComparisonDistrict, removeComparisonState, removeAllComparisons } = comparisonContext;
 
   const { resetMapValues } = useMap();
   const navigate = useNavigate();
@@ -35,15 +27,13 @@ const ComparisonDetails = () => {
       navigate('');
     }
     resetMapValues();
-    removeAllComparisons(); // Clear the comparison array
+    removeAllComparisons();
   };
 
   const Title = () => (
     <Styles.TitleWrapper>
       <Styles.ArrowBackButton style={{ color: 'white' }} onClick={handleGoBack} />
-      <Styles.Title style={{ color: 'white' }}>
-       {isEnglish ? 'Comparing Regions' : 'Comparando Regiões'}
-      </Styles.Title>
+      <Styles.Title style={{ color: 'white' }}>{isEnglish ? 'Comparing Regions' : 'Comparando Regiões'}</Styles.Title>
     </Styles.TitleWrapper>
   );
 
@@ -51,16 +41,16 @@ const ComparisonDetails = () => {
     <Box>
       <Title />
       {comparison.length > 0 && (
-        <Collapsible title= {isEnglish ? 'Comparison' : 'Comparação'}>
+        <Collapsible title={isEnglish ? 'Comparison' : 'Comparação'}>
           <>
             {comparison.map((feature: any, id) => (
               <Styles.ComparisonList key={id}>
                 {isState ? feature.properties.NM_UF : feature.properties.NM_MUN}
-                {/*{isState ? (
+                {isState ? (
                   <Styles.CloseButton onClick={() => removeComparisonState(feature)} />
                 ) : (
                   <Styles.CloseButton onClick={() => removeComparisonDistrict(feature)} />
-                )}*/}
+                )}
               </Styles.ComparisonList>
             ))}
           </>
