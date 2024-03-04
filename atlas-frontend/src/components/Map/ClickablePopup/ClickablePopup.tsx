@@ -9,10 +9,9 @@ interface Props {
   regionName: string;
   reference: mapboxgl.Map;
   feature: State;
-  onAddToComparison: () => void;
 }
 
-const ClickablePopupContent = ({ regionName, reference, feature, onAddToComparison }: Props) => {
+const ClickablePopupContent = ({ regionName, reference, feature }: Props) => {
   const isEnglish = window.location.href.includes('/en');
 
   const handleClick = () => {
@@ -28,16 +27,10 @@ const ClickablePopupContent = ({ regionName, reference, feature, onAddToComparis
           <ChevronRightIcon fontSize="small" />
         </Styles.IconWrapper>
       </Styles.ClickableSection>
-
       <Styles.PopupContent>
         <Styles.PopupText>
           {isEnglish ? 'Population' : 'População'}: {formatPopulationNumber(feature.properties?.POPULATION)}
         </Styles.PopupText>
-        {/* <Styles.ButtonWrapper>
-          <Styles.Button onClick={() => {
-            onAddStateToComparison(feature, reference);
-          }}>Add state to comparison</Styles.Button>
-        </Styles.ButtonWrapper> */}
       </Styles.PopupContent>
     </Styles.Popup>
   );
