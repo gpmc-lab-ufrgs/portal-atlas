@@ -50,7 +50,7 @@ const DataSection = (props: DataSectionProps) => {
   //   isSelectedOnComparison = comparison.some((region) => region.properties.CD_MUN === selected?.properties.CD_MUN);
   // }
 
-  //const hasSelectedDistrict = Boolean(selected);
+  // const hasSelectedDistrict = Boolean(selected);
 
   return (
     <Collapsible 
