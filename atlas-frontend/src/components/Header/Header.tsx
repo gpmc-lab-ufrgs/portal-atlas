@@ -109,7 +109,7 @@ const Header: React.FC<Props> = ({ isComparisonModeOn, comparisonType, setCompar
             />
           </button>
           <a href="https://www.ufrgs.br/atlas-oportunidades/" target="_blank" rel="noopener noreferrer">
-            <button style={{ height: 35, marginRight: 0 }} >{isEnglish ? 'Access Atlas website' : 'Acessar Atlas website' }</button>
+            <button style={{ height: 35, marginRight: 0, fontSize:14, fontStyle:'normal' }} >{isEnglish ? 'Access Atlas website' : 'Acessar Atlas website' }</button>
           </a>
         </div>
         <Drawer open={openMenu} setOpen={setOpenMenu} anchor="right">
