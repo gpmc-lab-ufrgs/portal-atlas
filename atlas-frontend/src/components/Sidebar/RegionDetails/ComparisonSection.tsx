@@ -5,12 +5,13 @@ import { useComparison as useComparisonState } from '@context/comparisonContextS
 
 import * as Styles from './styles';
 import { useLocation } from 'react-router-dom';
+import { Dispatch } from 'react';
 
 const ComparisonSection = () => {
   const isState = window.location.href.includes('/state');
   const isDistrict = window.location.href.includes('/district');
 
-  let comparison, removeComparisonDistrict, removeComparisonState;
+  let comparison, removeComparisonDistrict: Dispatch<any>, removeComparisonState;
 
   if (isState) {
     const { comparison: mainComparison, removeComparisonState: mainComparison3 } = useComparisonState();

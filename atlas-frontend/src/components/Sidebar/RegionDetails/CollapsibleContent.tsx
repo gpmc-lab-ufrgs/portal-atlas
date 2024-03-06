@@ -1,15 +1,7 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import MetricDetails from '@components/MetricDetails';
-
-import { useSelectedDistrict } from '@context/district/selectedContext';
-import { useSelectedState } from '@context/state/selectedContext';
-
-import { useComparison } from '@context/comparisonContext';
-import { useComparison as useComparisonState } from '@context/comparisonContextState';
-
-import { MapPropsContentType } from '@customTypes/map';
 
 import { Tooltip } from '@mui/material';
 
@@ -49,34 +41,6 @@ export const CollapsibleContent = (props: CollapsibleContentProps) => {
       }    
     }
   }, [isState, isDistrict]);
-
-  // let comparison, selected;
-
-  // if (isState) {
-  //   const { comparison: mainComparison } = useComparisonState();
-  //   const { selected: selectedMain } = useSelectedState();
-
-  //   comparison = mainComparison;
-  //   selected = selectedMain;
-  // } else {
-  //   const { comparison: mainComparison } = useComparison();
-  //   const { selected: selectedMain } = useSelectedDistrict();
-
-  //   comparison = mainComparison;
-  //   selected = selectedMain;
-  // }
-
-  // let isSelectedOnComparison;
-
-  // if (isState) {
-  //   isSelectedOnComparison = comparison.some((region) => region.properties.CD_UF === selected?.properties.CD_UF);
-  // } else {
-  //   isSelectedOnComparison = comparison.some((region) => region.properties.CD_MUN === selected?.properties.CD_MUN);
-  // }
-
-  // const hasSelectedState = isState ? Boolean(selected) : false;
-  // const hasSelectedDistrict = !isState ? Boolean(selected) : false;
-
   return (
     <>
       <Tooltip title={`${nmDescricao}`} arrow>
