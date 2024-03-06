@@ -65,6 +65,7 @@ const useMain = () => {
   }, [location]);
 
   console.log('Comparison value at the end:', comparison);
+  // console.log(comparison.forEach((feature: any) => console.log('Feature:', feature)));
 
   return {
     isComparisonModeEnabled,
