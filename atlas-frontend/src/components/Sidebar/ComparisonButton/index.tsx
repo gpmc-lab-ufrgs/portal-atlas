@@ -11,8 +11,11 @@ import { District } from '@customTypes/district';
 import { ReactComponent as CompareIcon } from '../../../assets/utils/compare.svg';
 import * as Styles from './styles';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { estadosSelected } from 'src/features/estadosSlice';
 
 const ComparisonButton = () => {
+  const allEstados = useSelector(estadosSelected);
   const isState = window.location.href.includes('/state');
 
   let comparison,
@@ -57,6 +60,18 @@ const ComparisonButton = () => {
   } else {
     isSelectedOnComparison = comparison.some((region) => region.properties.CD_MUN === selected?.properties.CD_MUN);
   }
+  // //TESTE DE COMPARAÇÃO - PRECISA DE AJUSTES
+  // const filtredData: object[] = [];
+  // const compareEstados = () => {
+  //   comparison.forEach((estado) => {
+  //     const data = allEstados.filter((estadoData) => estadoData.cdEstado == estado.properties.CD_UF);
+  //     for (let i = 0; i < data.length; i++) {
+  //       //console.log(`Data ${i}:`, data[i]);
+  //       filtredData.push(data[i]);
+  //     }
+  //     console.log('Filtred Data:', filtredData);
+  //   });
+  // };
 
   const comparisonClick = (feature: District | null) => {
     if (isState) {
