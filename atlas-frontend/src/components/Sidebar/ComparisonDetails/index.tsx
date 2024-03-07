@@ -10,6 +10,8 @@ import './styles.css';
 import { useSelector } from 'react-redux';
 import { estadosSelected } from 'src/features/estadosSlice';
 import { useEffect } from 'react';
+import { Estado } from 'src/interfaces/Estado.type';
+import { State } from '@customTypes/state';
 
 const ComparisonDetails = () => {
   const allEstados = useSelector(estadosSelected);
@@ -34,21 +36,21 @@ const ComparisonDetails = () => {
     removeAllComparisons();
   };
 
+  const filtredData: object[] = [];
   const compareEstados = () => {
-    const allEstadosCodes = allEstados.map((estado) => estado.cdEstado.toString());
-    const comparedEstados = comparison.filter((estado) => {
-      // Verificar se CD_UF não é undefined antes de usar includes
-      return estado.properties.CD_UF !== undefined && allEstadosCodes.includes(estado.properties.CD_UF.toString());
+    comparison.forEach((estado) => {
+      const data = allEstados.filter((estadoData) => estadoData.cdEstado == estado.properties.CD_UF);
+      for (let i = 0; i < data.length; i++) {
+        //console.log(`Data ${i}:`, data[i]);
+        filtredData.push(data[i]);
+      }
     });
-    // console.log('All Estados:', allEstadosCodes);
-    // console.log('Comparison:', comparison);
-    console.log('Estados que serão comparados:', comparedEstados);
-    return comparedEstados;
+    console.log('Filtred Data:', filtredData);
   };
 
-  useEffect(() => {
+  if (isState) {
     compareEstados();
-  }, [comparison]);
+  }
 
   const Title = () => (
     <Styles.TitleWrapper>
@@ -65,7 +67,6 @@ const ComparisonDetails = () => {
           <>
             {comparison.map((feature: any, id) => (
               <Styles.ComparisonList key={id}>
-                {/* {console.log(comparison.map((feature: any) => feature.properties))} */}
                 {isState ? feature.properties.NM_UF : feature.properties.NM_MUN}
                 {isState ? (
                   <Styles.CloseButton onClick={() => removeComparisonState(feature)} />
