@@ -9,7 +9,7 @@ export interface State {
     coordinates: number[][][];
   };
   properties: {
-    NM_UF?: string;
+    NM_UF?: number;
     CD_UF?: number;
     SIGLA_UF: string;
     AREA_KM2: number;
