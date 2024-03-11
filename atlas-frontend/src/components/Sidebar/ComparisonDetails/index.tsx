@@ -9,9 +9,6 @@ import * as Styles from './styles';
 import './styles.css';
 import { useSelector } from 'react-redux';
 import { estadosSelected } from 'src/features/estadosSlice';
-import { useEffect } from 'react';
-import { Estado } from 'src/interfaces/Estado.type';
-import { State } from '@customTypes/state';
 
 const ComparisonDetails = () => {
   const allEstados = useSelector(estadosSelected);
@@ -35,22 +32,6 @@ const ComparisonDetails = () => {
     resetMapValues();
     removeAllComparisons();
   };
-
-  const filtredData: object[] = [];
-  const compareEstados = () => {
-    comparison.forEach((estado) => {
-      const data = allEstados.filter((estadoData) => estadoData.cdEstado == estado.properties.CD_UF);
-      for (let i = 0; i < data.length; i++) {
-        //console.log(`Data ${i}:`, data[i]);
-        filtredData.push(data[i]);
-      }
-    });
-    console.log('Filtred Data:', filtredData);
-  };
-
-  if (isState) {
-    compareEstados();
-  }
 
   const Title = () => (
     <Styles.TitleWrapper>
