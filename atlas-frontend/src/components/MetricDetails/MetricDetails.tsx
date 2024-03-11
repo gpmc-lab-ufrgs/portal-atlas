@@ -23,10 +23,10 @@ const MetricDetails = (props: MetricDetailsProps) => {
   const isEnglish = pathname.includes('/en');
 
   const renderSingleMetric = () => {
-    const cdTitle = isState? dadoEstado?.cdEstado : dadoCidade?.cdCidade;
-    const nmFormato = isState? dadoEstado?.nmFormato : dadoCidade?.nmFormato;
-    const nmUnidade = isState? dadoEstado?.nmUnidade : dadoCidade?.nmUnidade;
-    const geosesDataValue = isState? dadoEstado?.vlPorCd : dadoCidade?.vlPorCd;
+    const cdTitle = isState ? dadoEstado?.cdEstado : dadoCidade?.cdCidade;
+    const nmFormato = isState ? dadoEstado?.nmFormato : dadoCidade?.nmFormato;
+    const nmUnidade = isState ? dadoEstado?.nmUnidade : dadoCidade?.nmUnidade;
+    const geosesDataValue = isState ? dadoEstado?.vlPorCd : dadoCidade?.vlPorCd;
     if (nmFormato === 'Float .2' || nmFormato === 'Float') {
       const parsedValue2 = parseFloat(geosesDataValue!);
 
@@ -60,7 +60,7 @@ const MetricDetails = (props: MetricDetailsProps) => {
         const displayValue2 = isNaN(parsedValue2)
           ? '-----'
           : parsedValue2.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 1 });
-        
+
         return (
           <div key={cdTitle}>
             <data value={geosesDataValue}>{displayValue2} </data>salários mínimos
@@ -106,10 +106,10 @@ const MetricDetails = (props: MetricDetailsProps) => {
             <data value={geosesDataValue}>{formattedValue2} </data>Mbps
           </div>
         );
-      } else if (nmUnidade === '%'){  
+      } else if (nmUnidade === '%') {
         return (
           <div key={cdTitle}>
-            {isNaN(parsedValue2)? (
+            {isNaN(parsedValue2) ? (
               <div>-----</div> // Replace with the desired action for NaN value
             ) : (
               <data value={geosesDataValue}>{`${parsedValue2}%`}</data>
@@ -119,21 +119,21 @@ const MetricDetails = (props: MetricDetailsProps) => {
       } else {
         return (
           <div key={cdTitle}>
-            {isNaN(parsedValue2)? (
+            {isNaN(parsedValue2) ? (
               <div>-----</div> // Replace with the desired action for NaN value
             ) : (
-              <data value={geosesDataValue}>{`${parsedValue2.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 2 }).replace(',', '.')}`}</data>
+              <data value={geosesDataValue}>{`${parsedValue2
+                .toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })
+                .replace(',', '.')}`}</data>
             )}
           </div>
         );
       }
-    } else if (nmFormato === 'Float .2 (-1 to +1)'){
+    } else if (nmFormato === 'Float .2 (-1 to +1)') {
       const parsedValue2 = parseFloat(geosesDataValue!);
       return (
         <div key={cdTitle}>
-          <data value={parsedValue2}>
-            {parseFloat(geosesDataValue!).toFixed(3)}
-          </data>
+          <data value={parsedValue2}>{parseFloat(geosesDataValue!).toFixed(3)}</data>
         </div>
       );
     } else if (nmFormato === 'Int') {
@@ -143,13 +143,13 @@ const MetricDetails = (props: MetricDetailsProps) => {
       const formattedValue = isNaN(parsedValue)
         ? '-----'
         : parsedValue.toLocaleString('pt-BR', { useGrouping: true }).replace(',', '.'); // Format to locale string
-      
+
       return (
         <div key={cdTitle}>
           <data value={geosesDataValue1}>{formattedValue}</data>
         </div>
       );
-    } else if (nmFormato === 'String'){
+    } else if (nmFormato === 'String') {
       return (
         <div key={cdTitle}>
           <data value={geosesDataValue}>{geosesDataValue}</data>
@@ -185,9 +185,7 @@ const MetricDetails = (props: MetricDetailsProps) => {
       return (
         <div key={cdTitle}>
           <div style={progressBarStyle}>
-            <div style={progressBarFilledStyle}>
-              {geosesDataValue1}%
-            </div>
+            <div style={progressBarFilledStyle}>{geosesDataValue1}%</div>
           </div>
         </div>
       );
