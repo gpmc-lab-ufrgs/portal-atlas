@@ -6,8 +6,10 @@ import { MapPropsContentType, MapPropsSectionType } from '@customTypes/map';
 import { District } from '@customTypes/district';
 import { State } from '@customTypes/state';
 import * as Styles from './styles';
+import { useSelector } from 'react-redux';
+import { estadosSelected } from 'src/features/estadosSlice';
+import { Estado } from 'src/interfaces/Estado.type';
 
-let comparison;
 const isState = window.location.href.includes('/comparison_states');
 
 if (isState) {
@@ -19,15 +21,25 @@ if (isState) {
     comparison: Array<District>;
   }
 }
-
 interface DictionaryData {
   title: string;
   content: Array<MapPropsContentType>;
   title_english: string; // Added property for English title
 }
-
 const TableContent: React.FC<Props> = ({ comparison }) => {
+  const allEstados = useSelector(estadosSelected);
+  const filtredData: Estado[] = [];
   const [dictionaryData, setDictionaryData] = useState<Array<DictionaryData>>([]);
+
+  const compareEstados = () => {
+    comparison.forEach((estado: State) => {
+      const data = allEstados.filter((estadoData) => estadoData.cdEstado == estado.properties.CD_UF);
+      for (let i = 0; i < data.length; i++) {
+        //console.log(`Data ${i}:`, data[i]);
+        filtredData.push(data[i]);
+      }
+    });
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -41,44 +53,61 @@ const TableContent: React.FC<Props> = ({ comparison }) => {
       const data = await response.json();
       setDictionaryData(data);
     }
-
     fetchData();
   }, []);
 
-const isEnglish = window.location.href.includes('/comparison_en') || window.location.href.includes('/comparison_states_en');
+  const estadosData: { [key: number]: { estado: number; dados: Estado[] } } = {};
+
+  useEffect(() => {
+    compareEstados();
+    filtredData.forEach((dado) => {
+      const estado = dado.cdEstado;
+      if (!estadosData[estado]) {
+        estadosData[estado] = {
+          estado: estado,
+          dados: [dado], // Inicia um array com o primeiro dado do estado
+        };
+      } else {
+        estadosData[estado].dados.push(dado); // Adiciona o dado ao array existente para o estado
+      }
+    });
+    console.log('Estados Data:', estadosData);
+  }, [filtredData]);
+
+  const isEnglish =
+    window.location.href.includes('/comparison_en') || window.location.href.includes('/comparison_states_en');
 
   // Define the order of sections
   const sectionOrder = isEnglish
-              ? [
-                  'Demographic',
-                  'Economy',
-                  'Entrepreneurship',
-                  'Education',
-                  'Health',
-                  'Safety',
-                  'Urbanism',
-                  'Technology and inovation',
-                  'Environment',
-                  'Mobility'
-                ]
-              : [
-                  'Demográfica',
-                  'Economia',
-                  'Empreendedorismo',
-                  'Educação',
-                  'Saúde',
-                  'Segurança',
-                  'Urbanismo',
-                  'Tecnologia e Inovação',
-                  'Meio Ambiente',
-                  'Mobilidade'
-                ];
+    ? [
+        'Demographic',
+        'Economy',
+        'Entrepreneurship',
+        'Education',
+        'Health',
+        'Safety',
+        'Urbanism',
+        'Technology and inovation',
+        'Environment',
+        'Mobility',
+      ]
+    : [
+        'Demográfica',
+        'Economia',
+        'Empreendedorismo',
+        'Educação',
+        'Saúde',
+        'Segurança',
+        'Urbanismo',
+        'Tecnologia e Inovação',
+        'Meio Ambiente',
+        'Mobilidade',
+      ];
 
   // Sort the sections based on the predefined order
   const sortedSections = dictionaryData.sort((a, b) => {
     return sectionOrder.indexOf(a.title) - sectionOrder.indexOf(b.title);
   });
-
 
   return (
     <>
@@ -90,41 +119,37 @@ const isEnglish = window.location.href.includes('/comparison_en') || window.loca
         >
           {section.content.map((content: MapPropsContentType, id) => (
             <>
-              {!content.nestedData && content.title !== "População Estimada em 2017" &&
-              content.title !== "População Estimada em 2018" &&
-              content.title !== "População Estimada em 2019" &&
-              content.title !== "População Estimada em 2020" &&
-              content.title !== "Estimated Population in 2017" &&
-              content.title !== "Estimated Population in 2018" &&
-              content.title !== "Estimated Population in 2019" &&
-              content.title !== "Estimated Population in 2020" &&
-              content.title !== "População" &&
-              content.title !== "Population" ? (
+              {!content.nestedData &&
+              content.title !== 'População Estimada em 2017' &&
+              content.title !== 'População Estimada em 2018' &&
+              content.title !== 'População Estimada em 2019' &&
+              content.title !== 'População Estimada em 2020' &&
+              content.title !== 'Estimated Population in 2017' &&
+              content.title !== 'Estimated Population in 2018' &&
+              content.title !== 'Estimated Population in 2019' &&
+              content.title !== 'Estimated Population in 2020' &&
+              content.title !== 'População' &&
+              content.title !== 'Population' ? (
                 <Styles.Table lineTableNumber={id} key={id}>
                   <Tooltip
                     title={
                       <div>
-                        <div>{isEnglish ? content.description_en : content.description}</div>
+                        <div>{isEnglish ? content.description : content.description}</div>
                       </div>
                     }
                   >
-                  <Styles.ColumnTitle>{isEnglish ? content.title_en : content.title}</Styles.ColumnTitle>
+                    <Styles.ColumnTitle>{isEnglish ? content.title : content.title}</Styles.ColumnTitle>
                   </Tooltip>
-                  {comparison.map((region, idx) => (
-                    <Styles.Column gridColumnNumber={idx + 2} key={idx}>
-                      {isState ? (
-                        <MetricDetails region={region} metric={content} />
-                      ) : (
-                        <MetricDetails region={region} metric={content} />
-                      )}
-                    </Styles.Column>
-                  ))}
+                  {filtredData.map((estado, index) => {
+                    return (
+                      <Styles.Column gridColumnNumber={index + 2} key={index}>
+                        <MetricDetails propsEstado={estado} />
+                      </Styles.Column>
+                    );
+                  })}
                 </Styles.Table>
               ) : (
-
-                <div >
-
-                </div>
+                <div></div>
               )}
             </>
           ))}
