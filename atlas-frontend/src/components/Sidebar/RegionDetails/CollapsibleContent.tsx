@@ -33,7 +33,7 @@ export const CollapsibleContent = (props: CollapsibleContentProps) => {
         setNmDescricao(isEnglish? dadosEstado.nmDescricaoEn : dadosEstado.nmDescricaoPt);
         setNmLabel(isEnglish ? dadosEstado.nmLabelEn : dadosEstado.nmLabelPt);
       }    
-    } else /*if (!isState && isDistrict)*/{
+    } else {
       if(dadosCidade){
         setNmTitulo(dadosCidade.nmCidade);
         setNmDescricao(isEnglish? dadosCidade.nmDescricaoEn : dadosCidade.nmDescricaoPt);
@@ -50,20 +50,6 @@ export const CollapsibleContent = (props: CollapsibleContentProps) => {
         <p>{nmTitulo}</p>
         <MetricDetails propsEstado={dadosEstado} propsCidade={dadosCidade} />
       </Styles.ValueContent>
-      
-      {/* {comparison.map((region) => (
-        <Styles.ValueContent key={isState ? region.properties.CD_UF : region.properties.CD_MUN}>
-          <p>{isState ? region.properties.NM_UF : region.properties.NM_MUN}</p>
-          <MetricDetails region={region} metric={props} />
-        </Styles.ValueContent>
-      ))} */}
-
-      {/* {(hasSelectedState || hasSelectedDistrict) && (
-        <Styles.ValueContent>
-          <p>{nmTitulo}</p>
-          <MetricDetails propsEstado={dadosEstado} propsCidade={dadosCidade} />
-        </Styles.ValueContent>
-      )} */}
     </>
   );
 };
