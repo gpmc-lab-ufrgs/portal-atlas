@@ -68,11 +68,29 @@ const onClose = (
 
 // Collapsible component
 const Collapsible = ({ children, title, isTitle = false }: Props) => {
-  const [collapsible, setCollapsible] = useState<CollapsibleType>(CollapsibleDefaultValue);
-  const initialOpenedCollapsibles = ['Demográfica', 'Demographic', 'Comparação', 'Comparison'];
+  const initialOpenedCollapsibles = [
+    'Demographic Summary',
+    'Demographic Summary',
+    'Locations to Compare',
+    'Locations to Compare',
+  ];
+  const storedOpenedCollapsibles = localStorage.getItem('openedCollapsibles');
+  const parsedOpenedCollapsibles = storedOpenedCollapsibles ? JSON.parse(storedOpenedCollapsibles) : null;
   const [openedCollapsibles, setOpenedCollapsibles] = useState<string[]>(
-    JSON.parse(localStorage.getItem('openedCollapsibles')!) || initialOpenedCollapsibles,
+    parsedOpenedCollapsibles || initialOpenedCollapsibles,
   );
+  const [collapsible, setCollapsible] = useState<CollapsibleType>({} as CollapsibleType);
+
+  useEffect(() => {
+    const initialCollapsibleState: CollapsibleType = {} as CollapsibleType;
+
+    // Inicializa o estado collapsible com base nos valores padrão
+    Object.keys(CollapsibleDefaultValue).forEach((key) => {
+      initialCollapsibleState[key as CollapsibleNames] = isOpen(key, openedCollapsibles);
+    });
+
+    setCollapsible(initialCollapsibleState);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('openedCollapsibles', JSON.stringify(openedCollapsibles));
@@ -85,6 +103,7 @@ const Collapsible = ({ children, title, isTitle = false }: Props) => {
         onOpening={() => onOpen(title, collapsible, openedCollapsibles, setOpenedCollapsibles)}
         onClosing={() => onClose(title, collapsible, openedCollapsibles, setOpenedCollapsibles)}
         lazyRender={true}
+        open={collapsible[title as CollapsibleNames]} // Passando o estado do collapsible como `open`
         className={title}
       >
         {children}
