@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useEffect, useState } from 'react';
 import { Tooltip } from '@mui/material';
 import Collapsible from '@components/Collapsible';
@@ -10,10 +9,6 @@ import * as Styles from './styles';
 
 let comparison;
 const isState = window.location.href.includes('/comparison_states');
-
-interface Props {
-  comparison: Array<State> | Array<District>;
-}
 
 if (isState) {
   interface Props {
@@ -110,9 +105,9 @@ const GridContent: React.FC<Props> = ({ comparison }) => {
                 content.title !== 'População' &&
                 content.title !== 'Population' ? (
                   <Styles.Grid key={id}>
-                    <Tooltip title={isEnglish ? content.description_en : content.description}>
+                    <Tooltip title={isEnglish ? content.description : content.description}>
                       <Styles.Title>
-                        <h2>{isEnglish ? content.title_en : content.title}</h2>
+                        <h2>{isEnglish ? content.title : content.title}</h2>
                       </Styles.Title>
                     </Tooltip>
                     <Styles.GridItem>
