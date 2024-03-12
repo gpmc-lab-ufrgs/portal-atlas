@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useEffect, useState } from 'react';
 import { Tooltip } from '@mui/material';
 import Collapsible from '@components/Collapsible';
@@ -10,6 +11,10 @@ import * as Styles from './styles';
 let comparison;
 const isState = window.location.href.includes('/comparison_states');
 
+interface Props {
+  comparison: Array<State> | Array<District>;
+}
+
 if (isState) {
   interface Props {
     comparison: Array<State>;
@@ -21,6 +26,7 @@ if (isState) {
 }
 
 interface DictionaryData {
+  title_english: string;
   title: string;
   content: Array<MapPropsContentType>;
 }
@@ -44,34 +50,35 @@ const GridContent: React.FC<Props> = ({ comparison }) => {
     fetchData();
   }, []);
 
-  const isEnglish = window.location.href.includes('/comparison_en') || window.location.href.includes('/comparison_states_en');
+  const isEnglish =
+    window.location.href.includes('/comparison_en') || window.location.href.includes('/comparison_states_en');
 
   // Define the order of sections
   const sectionOrder = isEnglish
-              ? [
-                  'Demographic',
-                  'Economy',
-                  'Entrepreneurship',
-                  'Education',
-                  'Health',
-                  'Safety',
-                  'Urbanism',
-                  'Technology and inovation',
-                  'Environment',
-                  'Mobility'
-                ]
-              : [
-                  'Demográfica',
-                  'Economia',
-                  'Empreendedorismo',
-                  'Educação',
-                  'Saúde',
-                  'Segurança',
-                  'Urbanismo',
-                  'Tecnologia e Inovação',
-                  'Meio Ambiente',
-                  'Mobilidade'
-                ];
+    ? [
+        'Demographic',
+        'Economy',
+        'Entrepreneurship',
+        'Education',
+        'Health',
+        'Safety',
+        'Urbanism',
+        'Technology and inovation',
+        'Environment',
+        'Mobility',
+      ]
+    : [
+        'Demográfica',
+        'Economia',
+        'Empreendedorismo',
+        'Educação',
+        'Saúde',
+        'Segurança',
+        'Urbanismo',
+        'Tecnologia e Inovação',
+        'Meio Ambiente',
+        'Mobilidade',
+      ];
 
   // Sort the sections based on the predefined order
   const sortedSections = dictionaryData.sort((a, b) => {
@@ -83,20 +90,25 @@ const GridContent: React.FC<Props> = ({ comparison }) => {
   return (
     <>
       {sortedSections.map((section: DictionaryData) => (
-        <Collapsible isTitle={true} title={isEnglish ? section.title_english : section.title} key={isEnglish ? section.title_english : section.title}>
+        <Collapsible
+          isTitle={true}
+          title={isEnglish ? section.title_english : section.title}
+          key={isEnglish ? section.title_english : section.title}
+        >
           <Styles.GridContainer>
             {section.content.map((content: MapPropsContentType, id) => (
               <>
-                {!content.nestedData && content.title !== "População Estimada em 2017" &&
-              content.title !== "População Estimada em 2018" &&
-              content.title !== "População Estimada em 2019" &&
-              content.title !== "População Estimada em 2020" &&
-              content.title !== "Estimated Population in 2017" &&
-              content.title !== "Estimated Population in 2018" &&
-              content.title !== "Estimated Population in 2019" &&
-              content.title !== "Estimated Population in 2020" &&
-              content.title !== "População" &&
-              content.title !== "Population" ? (
+                {!content.nestedData &&
+                content.title !== 'População Estimada em 2017' &&
+                content.title !== 'População Estimada em 2018' &&
+                content.title !== 'População Estimada em 2019' &&
+                content.title !== 'População Estimada em 2020' &&
+                content.title !== 'Estimated Population in 2017' &&
+                content.title !== 'Estimated Population in 2018' &&
+                content.title !== 'Estimated Population in 2019' &&
+                content.title !== 'Estimated Population in 2020' &&
+                content.title !== 'População' &&
+                content.title !== 'Population' ? (
                   <Styles.Grid key={id}>
                     <Tooltip title={isEnglish ? content.description_en : content.description}>
                       <Styles.Title>
@@ -106,15 +118,15 @@ const GridContent: React.FC<Props> = ({ comparison }) => {
                     <Styles.GridItem>
                       {comparison.map((region, idx) => (
                         <Styles.ComparisonLabel key={idx}>
-                        {isStatee ? (
-                          <Tooltip title={region?.properties.NM_UF}>
-                            <label>{region?.properties.NM_UF}</label>
-                          </Tooltip>
+                          {isStatee ? (
+                            <Tooltip title={region?.properties.NM_UF}>
+                              <label>{region?.properties.NM_UF}</label>
+                            </Tooltip>
                           ) : (
-                          <Tooltip title={region?.properties.NM_MUN}>
-                            <label>{region?.properties.NM_MUN} </label>
-                          </Tooltip>
-                           )}
+                            <Tooltip title={region?.properties.NM_MUN}>
+                              <label>{region?.properties.NM_MUN} </label>
+                            </Tooltip>
+                          )}
                           <MetricDetails region={region} metric={content} />
                         </Styles.ComparisonLabel>
                       ))}
