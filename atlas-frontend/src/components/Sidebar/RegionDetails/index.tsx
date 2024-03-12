@@ -2,10 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 
-import { useComparison } from '@context/comparisonContext';
-import { useAppDispatch, useAppSelector } from '@hook/hooks';
-import { estadoSelected, changeEstado } from 'src/features/estadoSlice';
-import { cidadeSelected, changeCidade } from 'src/features/cidadeSlice';
+import { useAppSelector } from '@hook/hooks';
+import { estadoSelected } from 'src/features/estadoSlice';
+import { cidadeSelected } from 'src/features/cidadeSlice';
 
 import ComparisonSection from './ComparisonSection';
 import DataSection from './DataSection';
