@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import Collapsible from '@components/Collapsible';
 
 import { useComparison } from '@context/comparisonContext';
@@ -6,12 +7,13 @@ import { useComparison as useComparisonState } from '@context/comparisonContextS
 import * as Styles from './styles';
 import { useLocation } from 'react-router-dom';
 import { Dispatch } from 'react';
+import { State } from '@customTypes/state';
 
 const ComparisonSection = () => {
   const isState = window.location.href.includes('/state');
   const isDistrict = window.location.href.includes('/district');
 
-  let comparison, removeComparisonDistrict: Dispatch<any>, removeComparisonState;
+  let comparison, removeComparisonDistrict: Dispatch<any>, removeComparisonState: (removeValue: State) => void;
 
   if (isState) {
     const { comparison: mainComparison, removeComparisonState: mainComparison3 } = useComparisonState();
@@ -73,7 +75,7 @@ const ComparisonSection = () => {
           )}
         </Styles.ComparisonList>
       ))}
-
+      {/* A linha abaixo chama o botão Mostrar comparação caso haja estados a ser comparados */}
       {comparison.length > 0 && ComparisonResult()}
       <Styles.DisclaimerText>{isEnglish ? 'Add up to 4 regions' : 'Adicione até 4 regiões'}</Styles.DisclaimerText>
     </Collapsible>
