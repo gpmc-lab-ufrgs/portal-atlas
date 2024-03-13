@@ -10,23 +10,16 @@ import { useSelector } from 'react-redux';
 import { estadosSelected } from 'src/features/estadosSlice';
 import { Estado } from 'src/interfaces/Estado.type';
 
-const isState = window.location.href.includes('/comparison_states');
-
-if (isState) {
-  interface Props {
-    comparison: Array<State>;
-  }
-} else {
-  interface Props {
-    comparison: Array<District>;
-  }
+interface Props<T> {
+  comparison: T[];
 }
 interface DictionaryData {
   title: string;
   content: Array<MapPropsContentType>;
   title_english: string; // Added property for English title
 }
-const TableContent: React.FC<Props> = ({ comparison }) => {
+
+const TableContent: React.FC<Props<State> | Props<District>> = ({ comparison }) => {
   const allEstados = useSelector(estadosSelected);
   const filtredData: Estado[] = [];
   const [dictionaryData, setDictionaryData] = useState<Array<DictionaryData>>([]);
@@ -71,7 +64,16 @@ const TableContent: React.FC<Props> = ({ comparison }) => {
         estadosData[estado].dados.push(dado); // Adiciona o dado ao array existente para o estado
       }
     });
-    console.log('Estados Data:', estadosData);
+    //console.log('Estados Data:', estadosData);
+    dictionaryData.map((estado) => {
+      console.log(`${estado.title}`, estado);
+    });
+  }, [filtredData]);
+
+  useEffect(() => {
+    filtredData.map((objeto) => {
+      console.log('filtredData', objeto);
+    });
   }, [filtredData]);
 
   const isEnglish =
@@ -108,17 +110,21 @@ const TableContent: React.FC<Props> = ({ comparison }) => {
   const sortedSections = dictionaryData.sort((a, b) => {
     return sectionOrder.indexOf(a.title) - sectionOrder.indexOf(b.title);
   });
+  //Depuração
+  // useEffect(() => {
+  //   console.log('sortedSections', sortedSections);
+  // }, [sortedSections]);
 
   return (
     <>
-      {sortedSections.map((section: DictionaryData) => (
+      {/* {sortedSections.map((section: DictionaryData) => (
         <Collapsible
           isTitle={true}
           title={isEnglish ? section.title_english : section.title}
           key={isEnglish ? section.title_english : section.title}
         >
           {section.content.map((content: MapPropsContentType, id) => (
-            <>
+            <div key={id}>
               {!content.nestedData &&
               content.title !== 'População Estimada em 2017' &&
               content.title !== 'População Estimada em 2018' &&
@@ -130,7 +136,7 @@ const TableContent: React.FC<Props> = ({ comparison }) => {
               content.title !== 'Estimated Population in 2020' &&
               content.title !== 'População' &&
               content.title !== 'Population' ? (
-                <Styles.Table lineTableNumber={id} key={id}>
+                <Styles.Table lineTableNumber={id}>
                   <Tooltip
                     title={
                       <div>
@@ -140,18 +146,58 @@ const TableContent: React.FC<Props> = ({ comparison }) => {
                   >
                     <Styles.ColumnTitle>{isEnglish ? content.title : content.title}</Styles.ColumnTitle>
                   </Tooltip>
-                  {filtredData.map((estado, index) => {
-                    return (
-                      <Styles.Column gridColumnNumber={index + 2} key={index}>
-                        <MetricDetails propsEstado={estado} />
-                      </Styles.Column>
-                    );
-                  })}
+                  {filtredData.map((objeto, index) => (
+                    <Styles.Column gridColumnNumber={index + 2} key={index}>
+                      <MetricDetails propsEstado={objeto} />
+                    </Styles.Column>
+                  ))}
                 </Styles.Table>
               ) : (
-                <div></div>
+                <div key={id}></div>
               )}
-            </>
+            </div>
+          ))}
+        </Collapsible>
+      ))} */}
+      {sortedSections.map((section: DictionaryData) => (
+        <Collapsible
+          isTitle={true}
+          title={isEnglish ? section.title_english : section.title}
+          key={isEnglish ? section.title_english : section.title}
+        >
+          {section.content.map((content: MapPropsContentType, id) => (
+            <div key={id}>
+              {!content.nestedData &&
+              content.title !== 'População Estimada em 2017' &&
+              content.title !== 'População Estimada em 2018' &&
+              content.title !== 'População Estimada em 2019' &&
+              content.title !== 'População Estimada em 2020' &&
+              content.title !== 'Estimated Population in 2017' &&
+              content.title !== 'Estimated Population in 2018' &&
+              content.title !== 'Estimated Population in 2019' &&
+              content.title !== 'Estimated Population in 2020' &&
+              content.title !== 'População' &&
+              content.title !== 'Population' ? (
+                <Styles.Table lineTableNumber={id}>
+                  <Tooltip
+                    title={
+                      <div>
+                        <div>{isEnglish ? content.description : content.description}</div>
+                      </div>
+                    }
+                  >
+                    <Styles.ColumnTitle>{isEnglish ? content.title : content.title}</Styles.ColumnTitle>
+                  </Tooltip>
+                  {filtredData.map((estado, index) => (
+                    <Styles.Column gridColumnNumber={index + 2} key={index}>
+                      <MetricDetails propsEstado={estado} />
+                    </Styles.Column>
+                  ))}
+                </Styles.Table>
+              ) : (
+                <div key={id}></div>
+              )}
+            </div>
           ))}
         </Collapsible>
       ))}
