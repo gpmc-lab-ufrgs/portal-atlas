@@ -43,35 +43,7 @@ export const selectedDistrictsContext = createContext<DistrictActions>(DEFAULT_V
 
 export function SelectedDistrictProvider({ children }: any) {
   //@ts-ignore
-const allDistricts: Array<District> = []
-  .concat(districtsSHAPE['features'])
-  //.concat(geojsonBA['features'])
-  //.concat(geojsonRS['features'])
-  //.concat(geojsonAC['features'])
-  //.concat(geojsonAL['features'])
-  //.concat(geojsonAM['features'])
-  //.concat(geojsonAP['features'])
-  //.concat(geojsonCE['features'])
-  //.concat(geojsonDF['features'])
-  //.concat(geojsonES['features'])
-  //.concat(geojsonGO['features'])
-  //.concat(geojsonMA['features'])
-  //.concat(geojsonMG['features'])
-  //.concat(geojsonMS['features'])
-  //.concat(geojsonMT['features'])
-  //.concat(geojsonPA['features'])
-  //.concat(geojsonPB['features'])
-  //.concat(geojsonPE['features'])
-  //.concat(geojsonPI['features'])
-  //.concat(geojsonPR['features'])
-  //.concat(geojsonRJ['features'])
-  //.concat(geojsonRN['features'])
-  //.concat(geojsonRR['features'])
-  //.concat(geojsonSC['features'])
-  //.concat(geojsonSE['features'])
-  //.concat(geojsonSP['features'])
-  //.concat(geojsonTO['features']);
-
+  const allDistricts: Array<District> = [].concat(districtsSHAPE['features']);
   const [all] = useState(allDistricts);
   const [selected, setSelected] = useState(null);
 
