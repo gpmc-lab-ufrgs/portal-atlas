@@ -11,26 +11,19 @@ import TableContent from './TableContent';
 
 import * as Styles from './styles';
 
-let comparison;
-const isState = window.location.href.includes('/comparison_states');
-
-if (isState) {
-  interface Props {
-    comparison: Array<State>;
-  }
-} else {
-  interface Props {
-    comparison: Array<District>;
-  }
+interface Props<T> {
+  comparison: T[];
 }
 
-const TableMode: React.FC<Props> = ({ comparison }) => {
+const isState = window.location.href.includes('/comparison_states');
+
+const TableMode: React.FC<Props<State> | Props<District>> = ({ comparison }) => {
   return (
     <Styles.TablerContainer>
       <Header comparison={comparison} />
       <Box>
         {districtProps.map((section, id) => (
-          <TableContent section={section} comparison={comparison} key={id} />
+          <TableContent key={id} section={section} comparison={comparison} />
         ))}
       </Box>
     </Styles.TablerContainer>
