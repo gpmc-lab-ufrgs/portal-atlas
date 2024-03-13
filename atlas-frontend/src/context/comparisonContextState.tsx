@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from 'react';
+import { useState, createContext, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { State as Estado } from '@customTypes/state';
 import { estadoSelected } from 'src/features/estadoSlice';
@@ -30,7 +30,7 @@ export function ComparisonProviderState({ children }: any) {
   };
 
   const removeComparisonState = (removeValue: Estado) => {
-    const newComparison = comparison.filter(state => state.id !== removeValue.id);
+    const newComparison = comparison.filter((state) => state.properties.CD_UF !== removeValue.properties.CD_UF);
     setComparison(newComparison);
   };
 
