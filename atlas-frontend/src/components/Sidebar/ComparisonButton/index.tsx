@@ -56,7 +56,7 @@ const ComparisonButton = () => {
   let isSelectedOnComparison;
 
   if (isState) {
-    isSelectedOnComparison = comparison.some((region) => region.properties.CD_UF === selected?.properties.CD_UF);
+    isSelectedOnComparison = comparison.some((region) => region.properties.SIGLA_UF === selected?.properties.SIGLA_UF);
   } else {
     isSelectedOnComparison = comparison.some((region) => region.properties.CD_MUN === selected?.properties.CD_MUN);
   }
