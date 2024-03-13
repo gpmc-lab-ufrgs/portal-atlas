@@ -15,13 +15,6 @@ drop table if exists atlas_schema.tb_formato;
 drop table if exists atlas_schema.tb_classificacao;
 drop table if exists atlas_schema.tb_estados;
 drop table if exists atlas_schema.tb_dicionario;
-drop table if exists ;
-drop table if exists ;
-drop table if exists ;
-drop table if exists ;
-drop table if exists ;
-drop table if exists ;
-drop table if exists ;
 
 create table atlas_schema.tb_agencias(
 	cd_agencia serial,
@@ -61,6 +54,7 @@ insert into atlas_schema.tb_formato(nm_formato) values ('Float .2');
 insert into atlas_schema.tb_formato(nm_formato) values ('Progress Bar');
 
 select * from atlas_schema.tb_formato;
+
 
 create table atlas_schema.tb_classificacao(
 	cd_classificacao serial,
@@ -305,7 +299,36 @@ and td.nm_label_pt is not null
 and td.cd_classificacao is not null
 order by 
     tcs.cd_cidade,
-    td.cd_classificacao
+    td.cd_classificacao;
+
+create table atlas_schema.tb_dicionario_census(
+	cd_nm_coluna varchar not null,
+	cd_agencia int not null,
+	cd_unidade int not null,
+	cd_formato int not null,
+	cd_classificacao int not null,
+	nm_descricao_pt varchar not null,
+	nm_descricao_en varchar not null,
+	nm_label_pt varchar not null,
+	nm_label_en varchar not null,
+	constraint constraint_dict_census unique (cd_nm_coluna, cd_agencia, cd_unidade, cd_formato, cd_classificacao)	
+);
+CREATE INDEX tb_dicionario_census_idx ON atlas_schema.tb_dicionario_census (cd_nm_coluna, cd_agencia, cd_unidade, cd_formato, cd_classificacao);
+
+create table atlas_schema.tb_cod_valor_census(
+	cd_setor int not null,
+	cd_nm_coluna varchar not null,
+	vl_por_cd varchar not null,
+	constraint constraint_cod_valor_census unique (cd_setor, cd_nm_coluna)	
+);
+CREATE INDEX tb_cod_valor_census_idx ON atlas_schema.tb_cod_valor_census (cd_setor, cd_nm_coluna);
+
+
+    
+    
+    
+    
+    
 
 
 
