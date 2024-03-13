@@ -1,19 +1,19 @@
 export interface Estado {
-  cdEstado: number;
-  nmEstado: string;
   cdAgencia: number;
-  nmAgencia: string;
-  cdUnidade: number;
-  nmUnidade: string;
-  cdFormato: number;
-  nmFormato: string;
   cdClassificacao: number;
-  nmClassificacaoPt: string;
-  nmClassificacaoEn: string;
+  cdEstado: number;
+  cdFormato: number;
   cdNmColuna: string;
-  nmDescricaoPt: string;
+  cdUnidade: number;
+  nmAgencia: string;
+  nmClassificacaoEn: string;
+  nmClassificacaoPt: string;
   nmDescricaoEn: string;
-  nmLabelPt: string;
+  nmDescricaoPt: string;
+  nmEstado: string;
+  nmFormato: string;
   nmLabelEn: string;
+  nmLabelPt: string;
+  nmUnidade: string;
   vlPorCd: string;
 }
