@@ -1,10 +1,8 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useState, useEffect } from 'react';
-import Bar from './Bar';
+
 import Graphic from './Graphic'; // Assuming Graphic component is in a separate file
-import { formatPopulationNumber, formatValue } from '@utils/formatValue';
 import { Estado } from 'src/interfaces/Estado.type';
 import { Cidades } from 'src/interfaces/Cidades.type';
 
@@ -14,13 +12,13 @@ interface MetricDetailsProps {
 }
 
 const MetricDetails = (props: MetricDetailsProps) => {
-  //const [geosesData, setGeosesData] = useState(null);
   const dadoEstado = props.propsEstado;
   const dadoCidade = props.propsCidade;
   const isState = window.location.href.includes('/comparison_states') || window.location.href.includes('/state');
 
   const { pathname } = location;
   const isEnglish = pathname.includes('/en');
+
 
   const renderSingleMetric = () => {
     const cdTitle = isState ? dadoEstado?.cdEstado : dadoCidade?.cdCidade;
@@ -36,7 +34,7 @@ const MetricDetails = (props: MetricDetailsProps) => {
           : parsedValue2
               .toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 3 })
               .replace(',', '.');
-
+        console.log('Parsed Value:', parsedValue2);
         return (
           <div key={cdTitle}>
             <data value={geosesDataValue}>{displayValue2}</data>
