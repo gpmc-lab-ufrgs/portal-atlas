@@ -66,6 +66,44 @@ const onClose = (
   setOpenedCollapsibles: React.Dispatch<React.SetStateAction<string[]>>,
 ) => updateIsOpen(key, false, collapsible, openedCollapsibles, setOpenedCollapsibles);
 
+// Function to render the trigger based on the title
+const renderTrigger = (title: string) => (
+  <div className="flex flex-row items-center">
+    {renderImage(title)}
+    <span>{title}</span>
+  </div>
+);
+
+// Function to render the image based on the title
+const renderImage = (title: string) => {
+  const images: Record<string, any> = {
+    Demográfica: demograficaImage,
+    Demographic: demograficaImage,
+    Economia: economiaImage,
+    Economy: economiaImage,
+    Empreendedorismo: empreendedorismoImage,
+    Entrepreneurship: empreendedorismoImage,
+    Educação: educacaoImage,
+    Education: educacaoImage,
+    'Tecnologia e Inovação': tiImage,
+    'Technology and Inovation': tiImage,
+    Mobilidade: mobilidadeImage,
+    Mobility: mobilidadeImage,
+    'Meio Ambiente': meioambienteImage,
+    Environment: meioambienteImage,
+    Saúde: saudeImage,
+    Health: saudeImage,
+    Segurança: segurancaImage,
+    Safety: segurancaImage,
+    Urbanismo: urbanismoImage,
+    Urbanism: urbanismoImage,
+  };
+
+  const image = images[title]; // Get the image based on the title
+
+  return image && <img src={image} alt={`${title} image`} className="max-w-35 h-auto mr-5" />; // Render the image if it exists
+};
+
 // Collapsible component
 const Collapsible = ({ children, title, isTitle = false }: Props) => {
   const initialOpenedCollapsibles = [
@@ -110,44 +148,6 @@ const Collapsible = ({ children, title, isTitle = false }: Props) => {
       </Component>
     </Styles.CollapsibleContainer>
   );
-};
-
-// Function to render the trigger based on the title
-const renderTrigger = (title: string) => (
-  <div className="flex flex-row items-center">
-    {renderImage(title)}
-    <span>{title}</span>
-  </div>
-);
-
-// Function to render the image based on the title
-const renderImage = (title: string) => {
-  const images: Record<string, any> = {
-    Demográfica: demograficaImage,
-    Demographic: demograficaImage,
-    Economia: economiaImage,
-    Economy: economiaImage,
-    Empreendedorismo: empreendedorismoImage,
-    Entrepreneurship: empreendedorismoImage,
-    Educação: educacaoImage,
-    Education: educacaoImage,
-    'Tecnologia e Inovação': tiImage,
-    'Technology and Inovation': tiImage,
-    Mobilidade: mobilidadeImage,
-    Mobility: mobilidadeImage,
-    'Meio Ambiente': meioambienteImage,
-    Environment: meioambienteImage,
-    Saúde: saudeImage,
-    Health: saudeImage,
-    Segurança: segurancaImage,
-    Safety: segurancaImage,
-    Urbanismo: urbanismoImage,
-    Urbanism: urbanismoImage,
-  };
-
-  const image = images[title]; // Get the image based on the title
-
-  return image && <img src={image} alt={`${title} image`} className="max-w-35 h-auto mr-5" />; // Render the image if it exists
 };
 
 export default Collapsible;
