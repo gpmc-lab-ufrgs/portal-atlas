@@ -3,6 +3,7 @@ import Collapsible from '@components/Collapsible';
 import { CollapsibleContent } from './CollapsibleContent';
 import { Estado } from 'src/interfaces/Estado.type';
 import { Cidades } from 'src/interfaces/Cidades.type';
+import { useEffect } from 'react';
 
 interface DataSectionProps {
   title: string;
@@ -11,9 +12,12 @@ interface DataSectionProps {
 }
 
 const DataSection = (props: DataSectionProps) => {
+
+  useEffect(() => {
+  }, [props]);
   const title = props.title;
   const lstDadosEstado = props.propsEstado;
-  const lstDadosCidade = props.propsCidade;
+  const lstDadosCidade = props.propsCidade; 
   const isState = window.location.href.includes('/state');
   const isDistrict = window.location.href.includes('/district');
 
