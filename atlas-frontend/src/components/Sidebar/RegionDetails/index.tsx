@@ -31,17 +31,28 @@ const RegionDetails = () => {
     const distinctNames = selectedData.map((item) => (isEnglish ? item.nmClassificacaoEn : item.nmClassificacaoPt));
     const uniqueNames = [...new Set(distinctNames)];
     setLstDistinct(uniqueNames);
-    console.log(selectedData);
   }, [selectedEstado, selectedCidade, isStateSelected, isDistrictSelected]);
 
   return (
     <Box>
-      {lstDistinct.map((item) => {
-        const filteredData = lstDados.filter((i) =>
-          isEnglish ? i.nmClassificacaoEn === item : i.nmClassificacaoPt === item,
-        ) as Estado[];
-        return <DataSection key={item} title={item} propsEstado={filteredData.length > 0 ? filteredData : undefined} />;
-      })}
+      {isStateSelected &&
+        lstDistinct.map((item) => {
+          const filteredData = lstDados.filter((i) =>
+            isEnglish ? i.nmClassificacaoEn === item : i.nmClassificacaoPt === item,
+          ) as Estado[];
+          return (
+            <DataSection key={item} title={item} propsEstado={filteredData.length > 0 ? filteredData : undefined} />
+          );
+        })}
+      {isDistrictSelected &&
+        lstDistinct.map((item) => {
+          const filteredData = lstDados.filter((i) =>
+            isEnglish ? i.nmClassificacaoEn === item : i.nmClassificacaoPt === item,
+          ) as Cidades[];
+          return (
+            <DataSection key={item} title={item} propsCidade={filteredData.length > 0 ? filteredData : undefined} />
+          );
+        })}
       {selectedEstado ? <ComparisonSection /> : null}
     </Box>
   );
