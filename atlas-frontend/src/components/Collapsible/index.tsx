@@ -42,7 +42,6 @@ const updateIsOpen = (
   key: string,
   value: boolean,
   collapsible: CollapsibleType,
-  openedCollapsibles: string[],
   setOpenedCollapsibles: React.Dispatch<React.SetStateAction<string[]>>,
 ) => {
   const newValue = { ...collapsible, [key]: value };
@@ -57,14 +56,14 @@ const onOpen = (
   collapsible: CollapsibleType,
   openedCollapsibles: string[],
   setOpenedCollapsibles: React.Dispatch<React.SetStateAction<string[]>>,
-) => updateIsOpen(key, true, collapsible, openedCollapsibles, setOpenedCollapsibles);
+) => updateIsOpen(key, true, collapsible, setOpenedCollapsibles);
 
 const onClose = (
   key: string,
   collapsible: CollapsibleType,
   openedCollapsibles: string[],
   setOpenedCollapsibles: React.Dispatch<React.SetStateAction<string[]>>,
-) => updateIsOpen(key, false, collapsible, openedCollapsibles, setOpenedCollapsibles);
+) => updateIsOpen(key, false, collapsible, setOpenedCollapsibles);
 
 // Function to render the trigger based on the title
 const renderTrigger = (title: string) => (
@@ -128,7 +127,7 @@ const Collapsible = ({ children, title, isTitle = false }: Props) => {
     });
 
     setCollapsible(initialCollapsibleState);
-  }, []);
+  }, [openedCollapsibles]);
 
   useEffect(() => {
     localStorage.setItem('openedCollapsibles', JSON.stringify(openedCollapsibles));
