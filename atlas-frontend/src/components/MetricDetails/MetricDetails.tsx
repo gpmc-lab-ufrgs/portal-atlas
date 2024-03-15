@@ -5,6 +5,7 @@
 import Graphic from './Graphic'; // Assuming Graphic component is in a separate file
 import { Estado } from 'src/interfaces/Estado.type';
 import { Cidades } from 'src/interfaces/Cidades.type';
+import { useEffect } from 'react';
 
 interface MetricDetailsProps {
   propsEstado?: Estado;
@@ -12,12 +13,17 @@ interface MetricDetailsProps {
 }
 
 const MetricDetails = (props: MetricDetailsProps) => {
+  
   const dadoEstado = props.propsEstado;
   const dadoCidade = props.propsCidade;
   const isState = window.location.href.includes('/comparison_states') || window.location.href.includes('/state');
 
   const { pathname } = location;
   const isEnglish = pathname.includes('/en');
+
+  useEffect(() => {
+    console.log('OBJETO', dadoEstado);
+  }, [dadoEstado]);
 
 
   const renderSingleMetric = () => {
