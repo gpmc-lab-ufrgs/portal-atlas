@@ -1,5 +1,9 @@
+/* eslint-disable no-var */
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import { Box } from '@mui/material';
-
+import { useEffect, useState } from 'react';
 import { useComparison } from '@context/comparisonContext';
 import { useComparison as useComparisonState } from '@context/comparisonContextState';
 
@@ -12,18 +16,61 @@ import { ReactComponent as CompareIcon } from '../../../assets/utils/compare.svg
 import * as Styles from './styles';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { estadosSelected } from 'src/features/estadosSlice';
+import { Estado } from 'src/interfaces/Estado.type';
+import { Cidades } from 'src/interfaces/Cidades.type';
+import { EstadoComparacao } from 'src/interfaces/EstadoComparacao.type';
+import { CidadeComparacao } from 'src/interfaces/CidadeComparacao.type';
+import { estadoSelected } from 'src/features/estadoSlice';
+import { cidadeSelected } from 'src/features/cidadeSlice';
+import { estadosComparacaoSelected, changeEstadosComparacao } from 'src/features/estadosComparacaoSlice';
+import { cidadesComparacaoSelected, changeCidadesComparacao } from 'src/features/cidadesComparacaoSlice';
+import { ReturnEstadoPorId, groupBy } from 'src/helpers/Helpers';
+import { useAppDispatch, useAppSelector } from '@hook/hooks';
 
 const ComparisonButton = () => {
-  const allEstados = useSelector(estadosSelected);
+  //const allEstados = useSelector(estadosSelected);
+  const [lstEstadosModoComparacao, setLstEstadosModoComparacao] = useState<EstadoComparacao[]>();
+  const [lstCidadesModoComparacao, setLstCidadesModoComparacao] = useState<CidadeComparacao[]>();
   const isState = window.location.href.includes('/state');
 
   let comparison,
-    selected,
+    selected: any,
     addComparisonDistrict: (arg0: (District | null)[]) => void,
     removeComparisonDistrict: (arg0: District | null) => void,
     addComparisonState: (arg0: (District | null)[]) => void,
     removeComparisonState: (arg0: District | null) => void;
+
+  const addEstadoComparacao = () => {
+    const selectedEstado = useAppSelector(estadoSelected);
+    const estComp: EstadoComparacao = {
+      cdEstado: selectedEstado[0].cdEstado,
+      dadosEstado: selectedEstado
+    };
+    lstEstadosModoComparacao?.push(estComp);
+  };
+
+  const removerEstadoComparacao = () => {
+    const selectedEstado = useAppSelector(estadoSelected);
+    lstEstadosModoComparacao?.filter(a =>
+      a.cdEstado !== selectedEstado[0].cdEstado
+    );
+  };
+
+  const addCidadeComparacao = () => {
+    const selectedCidade = useAppSelector(cidadeSelected);
+    const cidComp: CidadeComparacao = {
+      cdCidade: selectedCidade[0].cdCidade,
+      dadosCidade: selectedCidade
+    };
+    lstCidadesModoComparacao?.push(cidComp);;
+  };
+
+  const removerCidadeComparacao = () => {
+    const selectedCidade = useAppSelector(cidadeSelected);
+    lstCidadesModoComparacao?.filter(a =>
+      a.cdCidade !== selectedCidade[0].cdCidade
+    );
+  };
 
   if (isState) {
     const {
@@ -53,13 +100,15 @@ const ComparisonButton = () => {
 
   const isButtonOn = comparison.length >= 4;
 
-  let isSelectedOnComparison;
+  let isSelectedOnComparison: boolean = false;
 
   if (isState) {
     isSelectedOnComparison = comparison.some((region) => region.properties.SIGLA_UF === selected?.properties.SIGLA_UF);
   } else {
     isSelectedOnComparison = comparison.some((region) => region.properties.CD_MUN === selected?.properties.CD_MUN);
   }
+
+  
   // //TESTE DE COMPARAÇÃO - PRECISA DE AJUSTES
   // const filtredData: object[] = [];
   // const compareEstados = () => {
